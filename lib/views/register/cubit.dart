@@ -17,11 +17,11 @@ class RegisterCubit extends Cubit<RegisterStates> {
   final dioHelper = DioHelper();
 
   File? myImage;
-  final nameController = TextEditingController();
-  final phoneController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final nameController = TextEditingController(text: "ahme");
+  final phoneController = TextEditingController(text: "010275450235");
+  final emailController = TextEditingController(text: "amraer@gmail.com");
+  final passwordController = TextEditingController(text: "123456789");
+  final confirmPasswordController = TextEditingController(text: "123456789");
   final formKey = GlobalKey<FormState>();
 
   void chooseMyImage() {
@@ -33,36 +33,25 @@ class RegisterCubit extends Cubit<RegisterStates> {
     });
   }
 
-  void register() {
-    if (formKey.currentState!.validate()) {
-      if (myImage != null) {
-        dioHelper.sendData(
+  void register() async {
+    emit(RegisterLoadingState());
+
+    final response = await dioHelper
+        .sendData(
             endPoint: "intial/users/register",
             data: FormData.fromMap({
               "email": emailController.text,
               "password": passwordController.text,
               "phone": phoneController.text,
-              "image": MultipartFile.fromFileSync(myImage!.path),
+              "image": myImage!=null?
+              MultipartFile.fromFileSync(myImage!.path,
+                  filename: myImage!.path.split("/").last):null,
               "name": nameController.text,
             }));
-      } else {
-        ScaffoldMessenger.of(navigatorKey.currentContext!)
-            .showSnackBar(SnackBar(
-          backgroundColor: Colors.green.withOpacity(.5),
-                elevation: 0,
-                content: Row(
-          children: [
-            Icon(
-              Icons.message,
-              color: Colors.black,
-            ),
-            SizedBox(
-              width: 5.w,
-            ),
-            Text("Please Select Image First",style: TextStyle(color: Colors.black),),
-          ],
-        )));
-      }
+    if (response.isSuccess) {
+      emit(RegisterSuccessState(response.msg));
+    } else {
+      emit(RegisterFailedState(response.msg));
     }
   }
 }

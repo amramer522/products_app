@@ -4,14 +4,14 @@ class ProductsStates {}
 
 class ProductsInitialState extends ProductsStates {}
 
-class ProductsLoadingState extends ProductsStates {}
+class GetProductsLoadingState extends ProductsStates {}
 
-class ProductsFailedState extends ProductsStates {
+class GetProductsFailedState extends ProductsStates {
   final String msg;
-  ProductsFailedState({required this.msg});
+  GetProductsFailedState({required this.msg});
 }
 
-class ProductsSuccessState extends ProductsStates {
+class GetProductsSuccessState extends ProductsStates {
   final String msg;
-  ProductsSuccessState({required this.msg});
+  GetProductsSuccessState({required this.msg});
 }

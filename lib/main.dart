@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:product_app/views/products/view.dart';
 import 'core/cache_helper.dart';
 import 'core/helper_methods.dart';
+import 'views/home/view.dart';
+import 'views/login/view.dart';
 import 'views/my_map/view.dart';
 import 'views/register/view.dart';
 
@@ -27,7 +30,7 @@ class MyApp extends StatelessWidget {
         ),
         home: child,
       ),
-      child:  MapSample(),
+      child:  HomeScreen(),
     );
   }
 }
